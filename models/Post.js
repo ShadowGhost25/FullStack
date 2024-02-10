@@ -1,22 +1,31 @@
 import mongoose from "mongoose";
 
-const UserSchema = new mongoose.Schema({
-  fullName: {
+const PostSchema = new mongoose.Schema({
+  title: {
     type: String,
     required: true, //Это свойство обязательно при создание поста
   },
-  email: {
+  text: {
     type: String,
     required: true, //Это свойство обязательно при создание поста
     unique: true
   },
-  password: {
-    type: String,
+  tags: {
+    type: Array,
+    default: []
+  },
+  viewsCount: {
+    type: Number,
+    default: 0,
+  },
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User', //Ссылается на модель user
     required: true, //Это свойство обязательно при создание поста
   },
-  avatarUrl: String,
+  imageUrl: String,
 }, {
   timestamps: true,
 })
 
-export default mongoose.model('User', UserSchema)
+export default mongoose.model('Post', PostSchema)
