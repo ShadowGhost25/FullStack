@@ -1,11 +1,12 @@
 import express from 'express';
 import mongoose from 'mongoose';
+import multer from 'multer';
 
 import { loginValidator, registerValidator, postCreateValidator } from './validations.js'
 
-import cheakAuth from './utils/cheakAuth.js'
-import * as userController from './controller/userController.js';
-import * as postController from './controller/postController.js';
+import { postController, userController } from './controller/Controller.js'
+
+import { handleValidationEror, cheakAuth } from './utils/Utils.js';
 
 mongoose
   .connect('mongodb+srv://admin:wwwwww@practic.gpq4sx8.mongodb.net/blog?retryWrites=true&w=majority')
@@ -14,18 +15,36 @@ mongoose
 
 const app = express();
 
-app.use(express.json());
+const storage = multer.diskStorage({
+  destination: (_, __, cb) => {
+    cb(null, 'uploads')
+  },
+  filename: (_, file, cb) => {
+    cb(null, file.originalname)
+  }
+})
 
-app.post('/auth/login', loginValidator, userController.login)
-app.post('/auth/register', registerValidator, userController.register)
+const upload = multer({ storage })
+
+app.use(express.json());
+app.use('/uploads', express.static('uploads'))
+
+app.post('/auth/login', loginValidator, handleValidationEror, userController.login)
+app.post('/auth/register', registerValidator, handleValidationEror, userController.register)
 
 app.get('/auth/me', cheakAuth, userController.getMe)
 
-app.post('/posts', cheakAuth, postCreateValidator, postController.create)
+app.post('/upload', cheakAuth, upload.single('image'), (req, res) => {
+  res.json({
+    url: `/uploads/${req.file.originalname}`
+  })
+})
+
+app.post('/posts', cheakAuth, postCreateValidator, handleValidationEror, postController.create)
 app.get('/posts', postController.getAll)
 app.get('/posts/:id', postController.getOne)
 app.delete('/posts/:id', cheakAuth, postController.remove)
-app.patch('/posts/:id', postController.update)
+app.patch('/posts/:id', cheakAuth, postCreateValidator, handleValidationEror, postController.update)
 
 app.listen(4445, (err) => {
   if (err) {

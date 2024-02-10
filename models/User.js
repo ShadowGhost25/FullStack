@@ -3,18 +3,21 @@ import mongoose from "mongoose";
 const UserSchema = new mongoose.Schema({
   fullName: {
     type: String,
-    required: true, //Это свойство обязательно при создание поста
+    required: true, //Это свойство обязательно при создание пользователя
   },
   email: {
     type: String,
-    required: true, //Это свойство обязательно при создание поста
+    required: true, //Это свойство обязательно при создание пользователя
     unique: true
   },
   password: {
     type: String,
-    required: true, //Это свойство обязательно при создание поста
+    required: true, //Это свойство обязательно при создание пользователя
   },
-  avatarUrl: String,
+  avatarUrl: {
+    type:String,
+    required:true, //Это свойство обязательно при создание пользователя
+  },
 }, {
   timestamps: true,
 })

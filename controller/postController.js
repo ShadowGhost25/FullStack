@@ -23,8 +23,7 @@ export const getOne = async (req, res) => {
       returnDocument: 'after'
     },)
     if (!post) {
-      console.log("err => ", error)
-      res.status(404).json({
+      return res.status(404).json({
         message: "Статья не найдена"
       })
     }
@@ -32,7 +31,7 @@ export const getOne = async (req, res) => {
   } catch (error) {
     console.log("err => ", error)
     res.status(500).json({
-      message: "Не удалось получить стать."
+      message: "Не удалось получить статью"
     })
   }
 }
@@ -44,8 +43,7 @@ export const remove = async (req, res) => {
       _id: postId,
     })
     if (!post) {
-      console.log("err => ", error)
-      res.status(500).json({
+      return res.status(404).json({
         message: "Не удалось удалить статью"
       })
     }
