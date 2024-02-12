@@ -1,6 +1,7 @@
 import express from 'express';
 import mongoose from 'mongoose';
 import multer from 'multer';
+import cors from 'cors'
 
 import { loginValidator, registerValidator, postCreateValidator } from './validations.js'
 
@@ -27,6 +28,7 @@ const storage = multer.diskStorage({
 const upload = multer({ storage })
 
 app.use(express.json());
+app.use(cors())
 app.use('/uploads', express.static('uploads'))
 
 app.post('/auth/login', loginValidator, handleValidationEror, userController.login)
@@ -46,7 +48,7 @@ app.get('/posts/:id', postController.getOne)
 app.delete('/posts/:id', cheakAuth, postController.remove)
 app.patch('/posts/:id', cheakAuth, postCreateValidator, handleValidationEror, postController.update)
 
-app.listen(4445, (err) => {
+app.listen(4444, (err) => {
   if (err) {
     return console.log(err)
   }
