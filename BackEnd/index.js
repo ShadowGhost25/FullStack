@@ -28,7 +28,7 @@ const storage = multer.diskStorage({
 const upload = multer({ storage })
 
 app.use(express.json());
-app.use(cors());
+app.use(cors())
 app.use('/uploads', express.static('uploads'))
 
 app.post('/auth/login', loginValidator, handleValidationEror, userController.login)
@@ -41,13 +41,13 @@ app.post('/upload', cheakAuth, upload.single('image'), (req, res) => {
     url: `/uploads/${req.file.originalname}`
   })
 })
-
-app.post('/posts', cheakAuth, postCreateValidator, handleValidationEror, postController.create)
-
 app.get('/posts', postController.getAll)
+
 app.get('/tags', postController.getLastTags)
 
 app.get('/posts/tags', postController.getLastTags)
+
+app.post('/posts', cheakAuth, postCreateValidator, handleValidationEror, postController.create)
 app.get('/posts/:id', postController.getOne)
 app.delete('/posts/:id', cheakAuth, postController.remove)
 app.patch('/posts/:id', cheakAuth, postCreateValidator, handleValidationEror, postController.update)

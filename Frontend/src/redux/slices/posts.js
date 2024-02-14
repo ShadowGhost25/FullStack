@@ -4,12 +4,12 @@ import axios from '../../axios'
 export const fetchPosts = createAsyncThunk('posts/fetchPosts', async () =>{
     const {data} = await axios.get('/posts')
     return data
-}) // ассихронный запрос аction
+}) // ассихронный запрос аction Пост
 
 export const fetchTags = createAsyncThunk('posts/fetchTags', async () =>{
     const {data} = await axios.get('/tags')
     return data
-})
+})// ассихронный запрос аction Тэг
 
 const initialState = {
     posts: {

@@ -4,9 +4,11 @@ import Button from '@mui/material/Button';
 
 import styles from './Header.module.scss';
 import Container from '@mui/material/Container';
+import { useSelector } from 'react-redux';
+import { selectIsAuth } from '../../redux/slices/auth';
 
 export const Header = () => {
-  const isAuth = false;
+  const isAuth = useSelector(selectIsAuth)
 
   const onClickLogout = () => {};
 
