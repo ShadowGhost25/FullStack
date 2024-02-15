@@ -6,18 +6,26 @@ import SimpleMDE from 'react-simplemde-editor';
 
 import 'easymde/dist/easymde.min.css';
 import styles from './AddPost.module.scss';
+import { useDispatch, useSelector } from 'react-redux';
+import { selectIsAuth } from '../../redux/slices/auth';
+import { Navigate } from 'react-router-dom';
 
 export const AddPost = () => {
+  const isAuth = useSelector(selectIsAuth);
+
   const imageUrl = '';
   const [value, setValue] = React.useState('');
+  const [title, setTitle] = React.useState('');
+  const [tags, setTags] = React.useState('');
+  // const inputRef = React.useRef(null)
 
-  const handleChangeFile = () => {};
+  const handleChangeFile = () => { };
 
-  const onClickRemoveImage = () => {};
+  const onClickRemoveImage = () => { };
 
   const onChange = React.useCallback((value) => {
     setValue(value);
-  }, []);
+  }, []); //useCallback нужен для SimpleMDE библиотеки
 
   const options = React.useMemo(
     () => ({
@@ -33,6 +41,10 @@ export const AddPost = () => {
     }),
     [],
   );
+
+  if (!window.localStorage.getItem('token') && !isAuth) {
+    return <Navigate to="/" />
+  }
 
   return (
     <Paper style={{ padding: 30 }}>
@@ -54,10 +66,21 @@ export const AddPost = () => {
         classes={{ root: styles.title }}
         variant="standard"
         placeholder="Заголовок статьи..."
+        value={title}
+        onChange={e => setTitle(e.target.value)}
         fullWidth
       />
-      <TextField classes={{ root: styles.tags }} variant="standard" placeholder="Тэги" fullWidth />
-      <SimpleMDE className={styles.editor} value={value} onChange={onChange} options={options} />
+      <TextField classes={{ root: styles.tags }}
+        variant="standard"
+        placeholder="Тэги"
+        value={tags}
+        onChange={e => setTags(e.target.value)}
+        fullWidth />
+      <SimpleMDE 
+      className={styles.editor} 
+      value={value} 
+      onChange={onChange} 
+      options={options} />
       <div className={styles.buttons}>
         <Button size="large" variant="contained">
           Опубликовать
