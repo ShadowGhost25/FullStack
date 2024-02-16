@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 
 import { Post } from "../components/Post";
 import { Index } from "../components/AddComment";
+import Markdown from 'react-markdown'
 import { CommentsBlock } from "../components/CommentsBlock";
 import axios from '../axios'
 
@@ -22,14 +23,14 @@ export const FullPost = () => {
   }, [])
 
   if (isLoading) {
-    return <Post isLoading={isLoading} isFullPost/>
+    return <Post isLoading={isLoading} isFullPost />
   }
   return (
     <>
       <Post
         id={data._id}
         title={data.title}
-        imageUrl={data.imageUrl}
+        imageUrl={`http://localhost:4444${data.imageUrl}`}
         user={data.user}
         createdAt={data.createdAt}
         viewsCount={data.viewsCount}
@@ -37,9 +38,8 @@ export const FullPost = () => {
         tags={data.tags}
         isFullPost
       >
-        <p>
-{data.text}
-        </p>
+
+        <Markdown>{data.text}</Markdown>
       </Post>
       <CommentsBlock
         items={[

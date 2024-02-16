@@ -15,14 +15,15 @@ export const getAll = async (req, res) => {
 export const getOne = async (req, res) => {
   try {
     const postId = req.params.id;
-    const post = await PostModel.findByIdAndUpdate({
+    const post = await PostModel.findByIdAndUpdate({ 
       _id: postId
     }, {
       $inc: { viewsCount: 1 },
     }, {
       returnDocument: 'after'
-    },)
-    if (!post) {
+    },).populate('user')
+    
+      if (!post) {
       return res.status(404).json({
         message: "Статья не найдена"
       })
@@ -64,12 +65,11 @@ export const create = async (req, res) => {
       title: req.body.title,
       text: req.body.text,
       imageUrl: req.body.imageUrl,
-      tags: req.body.tags,
+      tags: req.body.tags.split(','),
       user: req.userId, // Получает id c chechAuth 
     })
 
     const post = await doc.save();
-
     res.json(post)
   } catch (error) {
     console.log("err => ", error)

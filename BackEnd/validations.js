@@ -13,8 +13,8 @@ export const registerValidator = [
 ]
 
 export const postCreateValidator = [
-  body('title', "Введите заголовок статьи").isEmail({ min: 3 }).isString(),
+  body('title', "Введите заголовок статьи").isLength({ min: 3 }).isString(),
   body('text', "Введите текст статьи").isLength({ min: 3 }).isString(),
   body('tags', 'Имя пользователя составляет менее 3 символом').optional().isString(),
-  body('imageURL', "Неверная ссылка на изображение").optional().isURL(),
+  body('imageUrl', "Неверная ссылка на изображение").optional().isString(),
 ]

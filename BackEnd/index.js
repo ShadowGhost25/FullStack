@@ -36,7 +36,7 @@ app.post('/auth/register', registerValidator, handleValidationEror, userControll
 
 app.get('/auth/me', cheakAuth, userController.getMe)
 
-app.post('/upload', cheakAuth, upload.single('image'), (req, res) => {
+app.post('/uploads', cheakAuth, upload.single('image'), (req, res) => {
   res.json({
     url: `/uploads/${req.file.originalname}`
   })
